@@ -1,21 +1,21 @@
-EntreLaunch Platform
+## EntreLaunch Platform
 
-##Table of Contents
+## Table of Contents
 
-Project Overview
-Key Features
-Architecture & Technology Stack
-Modules & Endpoints
-Usage
-Authentication & Authorization
-Training & Courses
-Projects & Opportunities
-Services
-Club & Wheel of Fortune
-Loyalty Points & Payments
-Getting Started
-Contributing
-License
+- Project Overview
+- Key Features
+- Architecture & Technology Stack
+- Modules & Endpoints
+- Usage
+- Authentication & Authorization
+- Training & Courses
+- Projects & Opportunities
+- Services
+- Club & Wheel of Fortune
+- Loyalty Points & Payments
+- Getting Started
+- Contributing
+- License
 
 
 ## Project Overview
