@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  elastic:
+    container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
+    ports:
+      - 9200:9200
+    volumes:
+      - elastic-data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.17.6
+    ports:
+      - 5601:5601
+    depends_on:
+      elastic:
+        condition: service_healthy
+    environment:
+      SERVER_REWRITEBASEPATH: true
+      SERVER_BASEPATH: /kibana
+      ELASTICSEARCH_HOSTS: '["http://elastic:9200"]'
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres
+    image: postgres:14.5
+    environment:
+      TZ: 'UTC'
+      PGTZ: 'UTC'
+      POSTGRES_DB: EntreLaunchDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: aieng
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    container_name: EntreLaunch-backend
+    build:
+      context: ../src/EntreLaunch.Web
+      dockerfile: Dockerfile
+    ports:
+      - "45437:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elastic:
+        condition: service_healthy
+    environment:
+      - Elasticsearch__Uri=http://elastic:9200
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=EntreLaunchDb;Username=postgres;Password=aieng
+      - JWT__SECRET=ea554be0f38ec1c36d220ba9e7321e997bc887ca1aea63b5decd99818e56baa2b110c08677574baef18f2cf5b35ea846e2671ea6f2efa90eba5dadc7d502f00dfe4ae41227a5d79c656eda68efabb90424c1501c58d4dbca7b8d246f9c84fee0c4ed9b8cfc336d8da6b40740d8bd3bdc3c2183a5f5ac48f619970dd79b755910
+      - JWT__ISSUER=issuer
+      - JWT__AUDIENCE=audience
+      - ASPNETCORE_ENVIRONMENT=Development
+    restart: unless-stopped
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web
+
+volumes:
+  postgres-data:
+  elastic-data:

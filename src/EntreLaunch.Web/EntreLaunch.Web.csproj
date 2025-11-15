@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SEntreLaunchpressTfmSEntreLaunchportBuildWarnings>true</SEntreLaunchpressTfmSEntreLaunchportBuildWarnings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\EntreLaunch.Web.xml</DocumentationFile>
+    <RunWithWarnings>true</RunWithWarnings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="bin\Debug\net8.0\EntreLaunch.Web.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\$(Configuration)\$(TargetFramework)\EntreLaunch.Web.xml" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- EF Migrations SEntreLaunchport -->
+  <ItemGroup Label="FilesToCopy">
+    <Content Include="EntreLaunch.targets" PackagePath="EntreLaunch.targets" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\free_domains.txt" />
+    <EmbeddedResource Include="Resources\disposable_domains.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EntreLaunch.Core\EntreLaunch.Core.csproj" />
+  </ItemGroup>
+
+</Project>
