@@ -122,7 +122,7 @@ Wallet & Transactions: Manage balance, top-ups, and purchases.
 ## Getting Started
 
 Clone the repository:
-git clone https://github.com/yourusername/EntreLaunch.git
+git clone https://github.com/almoneim80/EntreLaunch.git
 
 
 Set up the database using PostgreSQL.
