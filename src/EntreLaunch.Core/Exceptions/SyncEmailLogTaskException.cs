@@ -1,0 +1,22 @@
+﻿using System.Runtime.Serialization;
+
+namespace EntreLaunch.Exceptions
+{
+    [Serializable]
+    public class SyncEmailLogTaskException : Exception
+    {
+        public SyncEmailLogTaskException()
+        {
+        }
+
+        public SyncEmailLogTaskException(string? message)
+            : base(message)
+        {
+        }
+
+        public SyncEmailLogTaskException(string? message, Exception? innerException)
+            : base(message, innerException)
+        {
+        }
+    }
+}
